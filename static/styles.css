@@ -1,0 +1,78 @@
+/* Basic reset for margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+input[type="file"] {
+    margin-bottom: 10px;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff; /* Primary button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3; /* Darker on hover */
+}
+
+.image-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.image-container div {
+    position: relative; /* To position the hover effects */
+    width: 100%; /* Full width on mobile */
+    max-width: 512px; /* Max width for larger screens */
+    margin: 10px;
+    overflow: hidden; /* Ensure images don’t overflow the container */
+    border: 2px solid #007bff; /* Border for emphasis */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+}
+
+.image-container img {
+    width: 100%; /* Responsive */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Crop the image */
+    display: block; /* Remove the gap under images */
+}
+
+.image-container div:hover {
+    transform: scale(1.05); /* Scale up on hover */
+    transition: transform 0.2s; /* Smooth transition */
+}
+
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 600px) {
+    .image-container {
+        flex-direction: column; /* Stack images vertically on small screens */
+    }
+}

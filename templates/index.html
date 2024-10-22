@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Upload</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Upload an Image</h1>
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*" required>
+        <input type="file" name="file" accept="image/*">
         <input type="submit" value="Upload Image">
     </form>
 
     <h2>Uploaded Images</h2>
     <div class="image-container">
         {% for blob in blobs %}
-            <img src="{{ blob }}" alt="Uploaded Image" width="512" height="512">
+            <div>
+                <img src="{{ blob.url }}" alt="Uploaded Image" data-filename="{{ blob.name }}">
+            </div>
         {% else %}
             <p>No images uploaded yet.</p>
         {% endfor %}
@@ -38,6 +40,6 @@
         {% endif %}
     </div>
 
-    <script src="script.js"></script> <!-- Link to external JS -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

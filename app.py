@@ -3,6 +3,7 @@ from azure.storage.blob import BlobServiceClient
 import os
 from dotenv import load_dotenv
 from math import ceil
+from datetime import datetime, timezone
 
 app = Flask(__name__)
 
@@ -26,34 +27,36 @@ except Exception as e:
 
 
 
-@app.route("/", methods=["GET"])
+@app.route("/")
 def index():
-    # List all blobs in the container
-    blobs = [blob.name for blob in container_client.list_blobs()]
     
-    # Pagination logic (10 images per page)
+    blobs = container_client.list_blobs()
+    blob_info = []
+    
+    for blob in blobs:
+        blob_url = f"https://{blob_service_client.account_name}.blob.core.windows.net/{CONTAINER_NAME}/{blob.name}"
+        blob_info.append({
+            "url": blob_url,
+            "name": blob.name,
+            "last_modified": blob.last_modified
+        })
+ 
+    blob_info.sort(key=lambda x: x["last_modified"], reverse=True)
+
     page = int(request.args.get('page', 1))
-    per_page = 9
-    total_blobs = len(blobs)
+    per_page = 10
+    total_blobs = len(blob_info)
     start = (page - 1) * per_page
     end = start + per_page
 
-    # Get blobs for the current page
-    paginated_blobs = blobs[start:end]
+    paginated_blobs = blob_info[start:end]
 
-    # Generate the full URL for each blob in the current page
-    blob_urls = [
-        f"https://{blob_service_client.account_name}.blob.core.windows.net/{CONTAINER_NAME}/{blob}"
-        for blob in paginated_blobs
-    ]
-
-    # Check if there are more pages
     has_next = end < total_blobs
     has_prev = start > 0
 
     return render_template(
         "index.html",
-        blobs=blob_urls,
+        blobs=paginated_blobs,
         current_page=page,
         has_next=has_next,
         has_prev=has_prev
@@ -69,6 +72,7 @@ def upload_image():
 
     if file.filename == "":
         return "No selected file", 400
+
 
     # Upload the file to Azure Blob Storage
     blob_client = container_client.get_blob_client(file.filename)
