@@ -4,6 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Upload</title>
+    <style>
+        /* Basic styling for images and pagination */
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .image-container img {
+            width: 512px;
+            height: 512px;
+            object-fit: cover;
+            margin: 10px;
+            max-width: 100%;
+        }
+        .pagination {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .pagination a {
+            margin: 0 5px;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .pagination a:hover {
+            background-color: #0056b3;
+        }
+        .disabled {
+            background-color: grey;
+            pointer-events: none;
+        }
+        
+        /* Responsive design for smaller screens */
+        @media screen and (max-width: 600px) {
+            .image-container img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>Upload an Image</h1>
@@ -13,12 +55,27 @@
     </form>
 
     <h2>Uploaded Images</h2>
-    <div>
+    <div class="image-container">
         {% for blob in blobs %}
-            <img src="{{ blob }}" alt="Image" style="max-width: 200px; margin: 10px;">
+            <img src="{{ blob }}" alt="Uploaded Image">
         {% else %}
             <p>No images uploaded yet.</p>
         {% endfor %}
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        {% if has_prev %}
+            <a href="/?page={{ current_page - 1 }}">Previous</a>
+        {% else %}
+            <a class="disabled">Previous</a>
+        {% endif %}
+
+        {% if has_next %}
+            <a href="/?page={{ current_page + 1 }}">Next</a>
+        {% else %}
+            <a class="disabled">Next</a>
+        {% endif %}
     </div>
 </body>
 </html>
