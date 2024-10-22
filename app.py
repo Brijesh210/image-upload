@@ -33,7 +33,7 @@ def index():
     
     # Pagination logic (10 images per page)
     page = int(request.args.get('page', 1))
-    per_page = 10
+    per_page = 9
     total_blobs = len(blobs)
     start = (page - 1) * per_page
     end = start + per_page

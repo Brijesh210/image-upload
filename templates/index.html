@@ -4,64 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Upload</title>
-    <style>
-        /* Basic styling for images and pagination */
-        .image-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .image-container img {
-            width: 512px;
-            height: 512px;
-            object-fit: cover;
-            margin: 10px;
-            max-width: 100%;
-        }
-        .pagination {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .pagination a {
-            margin: 0 5px;
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-        .pagination a:hover {
-            background-color: #0056b3;
-        }
-        .disabled {
-            background-color: grey;
-            pointer-events: none;
-        }
-        
-        /* Responsive design for smaller screens */
-        @media screen and (max-width: 600px) {
-            .image-container img {
-                width: 100%;
-                height: auto;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS -->
 </head>
 <body>
     <h1>Upload an Image</h1>
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*">
+        <input type="file" name="file" accept="image/*" required>
         <input type="submit" value="Upload Image">
     </form>
 
     <h2>Uploaded Images</h2>
     <div class="image-container">
         {% for blob in blobs %}
-            <img src="{{ blob }}" alt="Uploaded Image">
+            <img src="{{ blob }}" alt="Uploaded Image" width="512" height="512">
         {% else %}
             <p>No images uploaded yet.</p>
         {% endfor %}
     </div>
+    
 
     <!-- Pagination Controls -->
     <div class="pagination">
@@ -77,5 +37,7 @@
             <a class="disabled">Next</a>
         {% endif %}
     </div>
+
+    <script src="script.js"></script> <!-- Link to external JS -->
 </body>
 </html>
