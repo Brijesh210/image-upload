@@ -5,5 +5,5 @@ services:
     image: bvarsani2100/image-upload:latest
     ports:
       - "5000:5000"
-    env_file:
-      - .env  
+    environment:
+      -  AZURE_STORAGE_CONNECTION_STRING=${AZURE_STORAGE_CONNECTION_STRING}
