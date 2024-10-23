@@ -26,34 +26,18 @@ h1, h2 {
     margin-bottom: 20px;
     color: var(--font-color);
 }
-
 #grad1 {
-    height: 250px;
+
     background: url('/static/iamgeba.jpg') no-repeat center center / cover;
     border-radius: 12px; /* Smooth rounded corners */
     margin-bottom: 20px;
     position: relative;
-    overflow: hidden;
+    /* Removed overflow: hidden; to allow scrolling */
 }
 
-#grad1::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* Dark overlay for better contrast */
-    z-index: 1;
-}
-
-#grad1 h1, #grad1 h2 {
-    position: relative;
-    z-index: 2; /* Ensure text is on top of the overlay */
-    color: white; /* Make the text white for readability */
-    text-align: center;
-    margin: 0;
-    padding: 20px;
+/* Global scrolling fix if necessary */
+html, body {
+    overflow: auto; /* Allow scrolling for the entire page */
 }
 
 /* Form styling */
