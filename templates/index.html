@@ -9,7 +9,8 @@
 <body>
     <h1>Upload an Image</h1>
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*">
+        <input type="file" name="file" accept="image/*" multiple>
+        <input type="hidden" name="user_agent" id="user_agent" value="">
         <input type="submit" value="Upload Image">
     </form>
 

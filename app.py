@@ -1,9 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, request
+from flask import Flask, render_template, request, redirect, url_for
 from azure.storage.blob import BlobServiceClient
 import os
 from dotenv import load_dotenv
-from math import ceil
-from datetime import datetime, timezone
+
 
 app = Flask(__name__)
 
@@ -24,7 +23,6 @@ try:
     container_client.get_container_properties()
 except Exception as e:
     container_client = blob_service_client.create_container(CONTAINER_NAME)
-
 
 
 @app.route("/")
@@ -66,17 +64,32 @@ def index():
 # Route to handle the image upload
 @app.route("/upload", methods=["POST"])
 def upload_image():
-    if "file" not in request.files:
-        return "No file part", 400
-    file = request.files["file"]
+    
+    files = request.files.getlist("file")
 
-    if file.filename == "":
-        return "No selected file", 400
+    if len(files) == 0:
+        return "No files selected", 400 
+    
+    if len(files) > 10:
+        return "You can upload up to 10 files only", 400
 
+    user_ip = request.remote_addr 
+    user_agent = request.form.get("user_agent")  
 
-    # Upload the file to Azure Blob Storage
-    blob_client = container_client.get_blob_client(file.filename)
-    blob_client.upload_blob(file, overwrite=True)
+    for file in files:
+        if file.filename == "":
+            return "No selected file", 400
+
+        blob_client = container_client.get_blob_client(file.filename)
+
+        blob_client.upload_blob(
+            file, 
+            overwrite=True, 
+            metadata={
+                "user_ip": user_ip,
+                "user_agent": user_agent
+            }
+        )
 
     return redirect(url_for("index"))
 
