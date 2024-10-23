@@ -35,10 +35,6 @@ jobs:
     - name: Build the Docker image
       run: docker-compose build
 
-    # Step 5: Tag the Docker image
-    - name: Tag the Docker image
-      run: docker tag imageupload bvarsani2100/image-upload:latest
-
     # Step 6: Push the Docker image to Docker Hub
     - name: Push Docker image to Docker Hub
       run: docker push bvarsani2100/image-upload:latest
