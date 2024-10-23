@@ -6,14 +6,20 @@
     <title>Image Upload</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
+<body <div id="grad1"></div>>
     <h1>Upload an Image</h1>
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*" multiple>
+        <div class="custom-file-upload">
+            <label for="file-upload" class="file-upload-label">
+                <span id="file-upload-text">No images selected</span>
+            </label>
+            <input id="file-upload" type="file" name="file" accept="image/*" multiple>
+        </div>
         <input type="hidden" name="user_agent" id="user_agent" value="">
         <input type="submit" value="Upload Image">
     </form>
-
+    
+    
     <h2>Uploaded Images</h2>
     <div class="image-container">
         {% for blob in blobs %}

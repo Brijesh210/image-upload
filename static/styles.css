@@ -1,78 +1,196 @@
-/* Basic reset for margin and padding */
+/* Basic reset for margin, padding, and box sizing */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
+:root {
+    --primary-color: #007bff;
+    --hover-color: #0056b3;
+    --font-color: #333;
+    --background-color: #f0f0f0;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-color);
+    color: var(--font-color);
     margin: 0;
     padding: 20px;
+    line-height: 1.6;
 }
 
 h1, h2 {
     text-align: center;
+    margin-bottom: 20px;
+    color: var(--font-color);
 }
 
+#grad1 {
+    height: 250px;
+    background: url('/static/iamgeba.jpg') no-repeat center center / cover;
+    border-radius: 12px; /* Smooth rounded corners */
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+#grad1::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Dark overlay for better contrast */
+    z-index: 1;
+}
+
+#grad1 h1, #grad1 h2 {
+    position: relative;
+    z-index: 2; /* Ensure text is on top of the overlay */
+    color: white; /* Make the text white for readability */
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Form styling */
 form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    background-color: hsl(210, 2%, 53%);
+    padding: 20px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
+.custom-file-upload {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 15px;
+    width: 100%;
+    text-align: center;
+}
+
+.file-upload-label {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: inline-block;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.file-upload-label:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-2px); /* Lift on hover */
+}
+
+#file-upload-text {
+    margin-right: 8px; /* Space between icon/text */
+    font-size: 1rem;
+    color: #fff;
+}
+
+/* Hide default file input */
 input[type="file"] {
-    margin-bottom: 10px;
+    display: none;
 }
 
 input[type="submit"] {
-    padding: 10px 20px;
-    background-color: #007bff; /* Primary button color */
+    padding: 12px 25px;
+    background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 input[type="submit"]:hover {
-    background-color: #0056b3; /* Darker on hover */
+    background-color: var(--hover-color);
+    transform: translateY(-3px); /* Lift on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
+input[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+
+input[type="submit"]:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-3px); /* Lift effect on hover */
+}
+
+input[type="submit"]:focus {
+    outline: 3px solid var(--hover-color);
+    outline-offset: 2px;
+}
+
+/* Image container styling */
 .image-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 15px; /* Increased space between images */
+    border-radius: 8px;
 }
 
 .image-container div {
-    position: relative; /* To position the hover effects */
-    width: 100%; /* Full width on mobile */
-    max-width: 512px; /* Max width for larger screens */
+    position: relative;
+    width: 100%; /* Responsive for mobile */
+    max-width: 512px; 
+    max-height: 512px;/* Slightly larger images for better visibility */
     margin: 10px;
-    overflow: hidden; /* Ensure images don’t overflow the container */
-    border: 2px solid #007bff; /* Border for emphasis */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-}
-
-.image-container img {
-    width: 100%; /* Responsive */
-    height: auto; /* Maintain aspect ratio */
-    object-fit: cover; /* Crop the image */
-    display: block; /* Remove the gap under images */
+    overflow: hidden;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Stronger shadow for depth */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smoother transitions */
 }
 
 .image-container div:hover {
-    transform: scale(1.05); /* Scale up on hover */
-    transition: transform 0.2s; /* Smooth transition */
+    transform: scale(1.1); /* More noticeable scale effect */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25); /* Deeper shadow on hover */
 }
 
+.image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease; /* Smooth zoom on hover */
+}
 
-/* Responsive design for smaller screens */
-@media screen and (max-width: 600px) {
+.image-container div:hover img {
+    transform: scale(1.05); /* Image zoom effect on hover */
+}
+
+/* Responsive design */
+@media screen and (max-width: 500px) {
     .image-container {
         flex-direction: column; /* Stack images vertically on small screens */
+    }
+
+    form {
+        width: 100%; /* Ensure the form stretches across the screen */
+    }
+
+    input[type="submit"] {
+        width: 100%; /* Full-width buttons on small screens */
+        padding: 15px;
     }
 }
