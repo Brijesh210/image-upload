@@ -37,11 +37,11 @@ jobs:
 
     # Step 5: Tag the Docker image
     - name: Tag the Docker image
-      run: docker tag <your-service-name> <DOCKERHUB_USERNAME>/<your-image-name>:latest
+      run: docker tag imageupload bvarsani2100/image-upload:latest
 
     # Step 6: Push the Docker image to Docker Hub
     - name: Push Docker image to Docker Hub
-      run: docker push <DOCKERHUB_USERNAME>/<your-image-name>:latest
+      run: docker push bvarsani2100/image-upload:latest
 
   deploy:
     needs: build
@@ -52,7 +52,7 @@ jobs:
     - name: 'Deploy to Azure Web App for Containers'
       uses: azure/webapps-deploy@v2
       with:
-        app-name: '<YOUR_AZURE_APP_NAME>'
-        images: '<DOCKERHUB_USERNAME>/<your-image-name>:latest'
+        app-name: 'imageuploadwa'
+        images: 'bvarsani2100/image-upload:latest'
         slot-name: 'production'  # or another slot if you are using staging slots
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
