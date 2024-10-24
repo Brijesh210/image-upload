@@ -45,10 +45,24 @@ jobs:
 
     steps:
     # Step 7: Deploy to Azure Web App for Containers using the pushed image
-    - name: 'Deploy to Azure Web App for Containers'
+    - name: Deploy to Azure Web App for Containers
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'imageuploadwa'
         images: 'bvarsani2100/image-upload:latest'
         slot-name: 'production'  # or another slot if you are using staging slots
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+
+    - name: Set up Azure CLI
+      uses: azure/setup-azure@v1
+      with:
+        azure-clid: 'az' # This will install Azure CLI if not present
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }} # Use the secret for credentials
+
+    - name: Restart Azure Web App
+      run: |
+        az webapp restart --name imageuploadwa --resource-group Learn-azure-AI
