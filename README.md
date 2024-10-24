@@ -16,6 +16,10 @@ It will create the local docker image, require docker desktop application
 
 > https://imageuploadwa-enfub9f6cxcnhxbx.centralindia-01.azurewebsites.net/
 
+## Public URL
+
+> http://image.brijesh.pl/
+
 ## to create azure storage container, in azure storage account 
 
 > az storage container create --name uploaded-images --account-name uploadiamgestorage 
