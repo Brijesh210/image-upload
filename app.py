@@ -5,16 +5,11 @@ from dotenv import load_dotenv
 
 
 app = Flask(__name__)
-
 load_dotenv()
 
-app = Flask(__name__)
-
-# Azure Blob Storage Configuration
 CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
 CONTAINER_NAME = "uploaded-images"
 
-# Initialize the Blob Service Client
 blob_service_client = BlobServiceClient.from_connection_string(CONNECTION_STRING)
 container_client = blob_service_client.get_container_client(CONTAINER_NAME)
 
@@ -27,23 +22,22 @@ except Exception as e:
 
 @app.route("/")
 def index():
-    
+
     blobs = container_client.list_blobs()
     blob_info = []
-    
+
     for blob in blobs:
         blob_url = f"https://{blob_service_client.account_name}.blob.core.windows.net/{CONTAINER_NAME}/{blob.name}"
-        blob_info.append({
-            "url": blob_url,
-            "name": blob.name,
-            "last_modified": blob.last_modified
-        })
- 
+        blob_info.append(
+            {"url": blob_url, "name": blob.name, "last_modified": blob.last_modified}
+        )
+
     blob_info.sort(key=lambda x: x["last_modified"], reverse=True)
 
-    page = int(request.args.get('page', 1))
-    per_page = 10
+    page = int(request.args.get("page", 1))
+    per_page = 9
     total_blobs = len(blob_info)
+    total_pages = int(total_blobs / per_page) + 1
     start = (page - 1) * per_page
     end = start + per_page
 
@@ -57,24 +51,24 @@ def index():
         blobs=paginated_blobs,
         current_page=page,
         has_next=has_next,
-        has_prev=has_prev
+        has_prev=has_prev,
+        total_pages=total_pages,
     )
 
 
-# Route to handle the image upload
 @app.route("/upload", methods=["POST"])
 def upload_image():
-    
+
     files = request.files.getlist("file")
 
     if len(files) == 0:
-        return "No files selected", 400 
-    
+        return "No files selected", 400
+
     if len(files) > 10:
         return "You can upload up to 10 files only", 400
 
-    user_ip = request.remote_addr 
-    user_agent = request.form.get("user_agent")  
+    user_ip = request.remote_addr
+    user_agent = request.form.get("user_agent")
 
     for file in files:
         if file.filename == "":
@@ -83,12 +77,9 @@ def upload_image():
         blob_client = container_client.get_blob_client(file.filename)
 
         blob_client.upload_blob(
-            file, 
-            overwrite=True, 
-            metadata={
-                "user_ip": user_ip,
-                "user_agent": user_agent
-            }
+            file,
+            overwrite=True,
+            metadata={"user_ip": user_ip, "user_agent": user_agent},
         )
 
     return redirect(url_for("index"))

@@ -16,9 +16,12 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: var(--background-color);
     color: var(--font-color);
-    margin: 0;
-    padding: 20px;
     line-height: 1.6;
+    background-image: url('/static/iamgeba.jpg');
+    background-attachment: fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
 }
 
 h1, h2 {
@@ -26,18 +29,26 @@ h1, h2 {
     margin-bottom: 20px;
     color: var(--font-color);
 }
-#grad1 {
 
-    background: url('/static/iamgeba.jpg') no-repeat center center / cover;
-    border-radius: 12px; /* Smooth rounded corners */
-    margin-bottom: 20px;
-    position: relative;
-    /* Removed overflow: hidden; to allow scrolling */
-}
 
 /* Global scrolling fix if necessary */
 html, body {
-    overflow: auto; /* Allow scrolling for the entire page */
+    margin: 0; /* Remove default margins */
+    padding: 0; /* Remove default padding */
+    width: 100%; /* Ensure full width */
+    overflow-x: hidden;
+}
+
+.upload-heading {
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue background */
+    color: #000000; /* Blue text color */
+    padding: 10px 20px; /* Padding around the text */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center the text */
+    margin-bottom: 15px; /* Space below the heading */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-family: 'Arial', sans-serif; /* Font style */
+    font-size: 1.5em; /* Font size */
 }
 
 /* Form styling */
@@ -54,6 +65,18 @@ form {
     max-width: 400px;
     margin: 0 auto;
 }
+
+hr {
+    border: none; /* Remove default border */
+    height: 5px; /* Increase height for a bolder look */
+    border: 5px solid #ddd;
+    background: linear-gradient(to right, #59799b, #6ec6ff); /* Gradient background */
+    width: 100%; /* Width of the horizontal line */
+    margin: 20px auto; /* Center align and add margin */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
 
 .custom-file-upload {
     position: relative;
@@ -124,6 +147,11 @@ input[type="submit"]:focus {
     outline-offset: 2px;
 }
 
+* {
+    box-sizing: border-box; /* Include padding and border in width/height */
+}
+
+
 /* Image container styling */
 .image-container {
     display: flex;
@@ -131,6 +159,8 @@ input[type="submit"]:focus {
     justify-content: center;
     gap: 15px; /* Increased space between images */
     border-radius: 8px;
+    width: 100%; /* Ensure full width */
+    padding: 10px;
 }
 
 .image-container div {
@@ -153,7 +183,7 @@ input[type="submit"]:focus {
 
 .image-container img {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
     display: block;
     transition: transform 0.3s ease; /* Smooth zoom on hover */
@@ -161,6 +191,69 @@ input[type="submit"]:focus {
 
 .image-container div:hover img {
     transform: scale(1.05); /* Image zoom effect on hover */
+}
+
+/* Pagination */
+.pagination-container {
+    margin-top: 1.5rem;
+}
+
+.pagination {
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+}
+
+/* Modern Button Style */
+.pagination .page-link {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    margin: 0 10px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.pagination .page-link:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Disabled state */
+.pagination .disabled .page-link {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Page Number Style */
+.pagination .page-number {
+    background-color: transparent;
+    color: #343a40;
+    font-size: 1rem;
+    margin: 0 10px;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+    .pagination .page-link {
+        padding: 8px 15px;
+        font-size: 1rem;
+    }
+
+    .pagination .page-number {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
 }
 
 /* Responsive design */
@@ -171,6 +264,11 @@ input[type="submit"]:focus {
 
     form {
         width: 100%; /* Ensure the form stretches across the screen */
+    }
+
+    .image-container div {
+        max-width: 100%; /* Allow full width on small screens */
+        margin: 5px; /* Adjust margin if needed */
     }
 
     input[type="submit"] {
