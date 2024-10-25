@@ -24,13 +24,23 @@ except Exception as e:
 def index():
 
     blobs = container_client.list_blobs()
+    
+    
     blob_info = []
 
     for blob in blobs:
+
+        blob_client = container_client.get_blob_client(blob.name)
+        blob_properties = blob_client.get_blob_properties()
+        user_ip = blob_properties.metadata.get("user_ip")
+        user_agent = blob_properties.metadata.get("user_agent")
+
         blob_url = f"https://{blob_service_client.account_name}.blob.core.windows.net/{CONTAINER_NAME}/{blob.name}"
+
         blob_info.append(
-            {"url": blob_url, "name": blob.name, "last_modified": blob.last_modified}
+            {"url": blob_url, "name": blob.name, "last_modified": blob.last_modified,"user_ip": user_ip, "user_agent": user_agent}
         )
+        
 
     blob_info.sort(key=lambda x: x["last_modified"], reverse=True)
 
@@ -42,6 +52,10 @@ def index():
     end = start + per_page
 
     paginated_blobs = blob_info[start:end]
+    
+    for bob in blob_info:
+        print(bob["name"])
+
 
     has_next = end < total_blobs
     has_prev = start > 0
@@ -68,6 +82,7 @@ def upload_image():
         return "You can upload up to 10 files only", 400
 
     user_ip = request.remote_addr
+    print(f'hello {user_ip}')
     user_agent = request.form.get("user_agent")
 
     for file in files:
