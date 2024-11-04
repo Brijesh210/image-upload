@@ -20,6 +20,26 @@ except Exception as e:
     container_client = blob_service_client.create_container(CONTAINER_NAME)
 
 
+def get_blob_info():
+    """Retrieve blob information from Azure Blob storage."""
+    blobs = container_client.list_blobs()
+    blob_info = []
+    for blob in blobs:
+        blob_client = container_client.get_blob_client(blob.name)
+        blob_properties = blob_client.get_blob_properties()
+        user_ip = blob_properties.metadata.get("user_ip")
+        user_agent = blob_properties.metadata.get("user_agent")
+        blob_url = f"https://{blob_service_client.account_name}.blob.core.windows.net/{CONTAINER_NAME}/{blob.name}"
+        blob_info.append({
+            "url": blob_url,
+            "name": blob.name,
+            "last_modified": blob.last_modified,
+            "user_ip": user_ip,
+            "user_agent": user_agent
+        })
+    return sorted(blob_info, key=lambda x: x["last_modified"], reverse=True)
+
+
 @app.route("/")
 def index():
 
@@ -68,6 +88,39 @@ def index():
         has_prev=has_prev,
         total_pages=total_pages,
     )
+
+
+@app.route("/delete")
+def delete_page():
+    """Page for deleting images with delete buttons."""
+    blob_info = get_blob_info()
+    page = int(request.args.get("page", 1))
+    per_page = 9
+    total_blobs = len(blob_info)
+    total_pages = (total_blobs + per_page - 1) // per_page
+    start = (page - 1) * per_page
+    end = start + per_page
+
+    paginated_blobs = blob_info[start:end]
+    has_next = end < total_blobs
+    has_prev = start > 0
+
+    return render_template(
+        "delete.html",
+        blobs=paginated_blobs,
+        current_page=page,
+        has_next=has_next,
+        has_prev=has_prev,
+        total_pages=total_pages,
+    )
+
+@app.route("/delete_image/<blob_name>", methods=["POST"])
+def delete_image(blob_name):
+    """Delete an image from the Azure Blob storage."""
+    blob_client = container_client.get_blob_client(blob_name)
+    blob_client.delete_blob()
+    return redirect(url_for("delete_page"))
+
 
 
 @app.route("/upload", methods=["POST"])
