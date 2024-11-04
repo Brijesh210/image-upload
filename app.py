@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,send_file
 from azure.storage.blob import BlobServiceClient
 import os
 from dotenv import load_dotenv
+from io import BytesIO
 
 
 app = Flask(__name__)
@@ -121,6 +122,19 @@ def delete_image(blob_name):
     blob_client.delete_blob()
     return redirect(url_for("delete_page"))
 
+
+@app.route("/download/<blob_name>")
+def download_image(blob_name):
+    blob_client = container_client.get_blob_client(blob_name)
+    download_stream = blob_client.download_blob()
+    blob_data = BytesIO(download_stream.readall())
+
+    return send_file(
+        blob_data,
+        as_attachment=True,
+        download_name=blob_name,
+        mimetype="image/jpeg"
+    )
 
 
 @app.route("/upload", methods=["POST"])
