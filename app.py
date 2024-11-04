@@ -148,9 +148,9 @@ def upload_image():
     if len(files) > 10:
         return "You can upload up to 10 files only", 400
 
-    user_ip = request.remote_addr
-    print(f'hello {user_ip}')
-    user_agent = request.form.get("user_agent")
+
+    user_ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0].strip()
+    user_agent = request.headers.get('User-Agent', 'Unknown')
 
     for file in files:
         if file.filename == "":
