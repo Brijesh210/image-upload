@@ -156,6 +156,7 @@ def is_vpn_ip(ip):
         response = requests.get(url)
         response.raise_for_status()  # Raise an error for bad responses
         data = response.json()
+        print(data)
         print("good to go")
         return data.get("is_vpn", False)  # Adjust based on actual API response
     except requests.exceptions.RequestException as e:
