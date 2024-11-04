@@ -66,7 +66,7 @@ def index():
     blob_info.sort(key=lambda x: x["last_modified"], reverse=True)
 
     page = int(request.args.get("page", 1))
-    per_page = 9
+    per_page = 21
     total_blobs = len(blob_info)
     total_pages = int(total_blobs / per_page) + 1
     start = (page - 1) * per_page
@@ -96,7 +96,7 @@ def delete_page():
     """Page for deleting images with delete buttons."""
     blob_info = get_blob_info()
     page = int(request.args.get("page", 1))
-    per_page = 9
+    per_page = 25
     total_blobs = len(blob_info)
     total_pages = (total_blobs + per_page - 1) // per_page
     start = (page - 1) * per_page
