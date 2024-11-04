@@ -63,7 +63,7 @@
                         <button type="submit" class="btn btn-danger btn-sm btn-delete">Delete</button>
                     </form>
 
-                    <form action="{{ url_for('download_image', blob_name=blob.name) }}" method="post" style="flex: 1;">
+                    <form action="{{ url_for('download_image', blob_name=blob.name) }}" method="get" style="flex: 1;">
                         <button type="submit" class="btn btn-primary btn-sm btn-download">Download</button>
                     </form>
                     <!-- Download Button with Direct Link 

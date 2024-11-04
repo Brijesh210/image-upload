@@ -134,7 +134,7 @@ def delete_image(blob_name):
     return redirect(url_for("delete_page"))
 
 
-@app.route("/download/<blob_name>")
+@app.route("/download/<blob_name>", methods=["GET"])
 def download_image(blob_name):
     blob_client = container_client.get_blob_client(blob_name)
     download_stream = blob_client.download_blob()
@@ -148,10 +148,9 @@ def download_image(blob_name):
 def is_vpn_ip(ip):
     # Example of a simple VPN detection API call
 
-
     apiKey = os.getenv("VPN_API")
-    url = f'https://api.ipapi.is?q={ip}&key={apiKey}'
-    
+    url = f"https://api.ipapi.is?q={ip}&key={apiKey}"
+
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an error for bad responses
@@ -161,7 +160,7 @@ def is_vpn_ip(ip):
         return data.get("is_vpn", False)  # Adjust based on actual API response
     except requests.exceptions.RequestException as e:
         print(f"Error checking VPN status: {e}")
-        return False  
+        return False
 
 
 @app.route("/upload", methods=["POST"])
